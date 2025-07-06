@@ -65,6 +65,9 @@
             
             /* Animate any changes to opacity and transform over 0.5s */
             transition: opacity 0.5s ease, transform 0.5s ease;
+
+            max-width: 1500px; /* max-width for the whole component */
+            margin: 0 auto;    /* centers it horizontally */
         }
 
         /* 4. The Visible State Class */
@@ -74,11 +77,11 @@
             transform: scale(1);
         }
 
-        /* Panel Content Styling (Unchanged) */
+        /* Panel Content Styling */
         .panel .text-content {
             flex-basis: 50ch; /* Set a base width related to character count */
             flex-grow: 1;      /* Allow it to grow */
-            max-width: 65ch;   /* BUT, don't let it get wider than 65 characters */
+            max-width: 300ch;   /* BUT, don't let it get wider than 65 characters */
         }
         .panel .image-content {
             flex-basis: 50%;   /* Let the image side have a strong base size */
@@ -92,7 +95,7 @@
         .panel p { font-size: 1.1rem; line-height: 1.7; }
         .panel:nth-child(even) { flex-direction: row-reverse; }
         
-        /* Individual Panel Theming (Unchanged) */
+        /* Individual Panel Theming */
         #panel-1 { background-color: #131313; }
         #panel-2 { background-color: #131313; }
         #panel-3 { background-color: #131313; }
@@ -112,7 +115,7 @@
             width: 100%;
         }
 
-        /* Responsive Design (Unchanged) */
+        /* Responsive Design */
         @media (max-width: 768px) {
             .panel { flex-direction: column !important; padding: 2rem; justify-content: center; text-align: center; }
             .panel h2 { font-size: 2rem; }
