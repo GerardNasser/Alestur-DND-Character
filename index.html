@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alestur Character Information</title>
+    <!-- Google Fonts for better typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Roboto+Slab:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Base Setup & Smooth Scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            color: #f4f4f4;
+            background-color: #f4f4f4;
+        }
+
+        /* Scroll Watcher (Your Progress Bar) */
+        .scroll-watcher {
+            height: 8px;
+            position: fixed;
+            top: 0;
+            z-index: 1000;
+            background-color: #ffffff;
+            width: 100%;
+            scale: 0 1;
+            transform-origin: left;
+            /* This animation is linked to the scroll position of the page */
+            animation: scroll-watcher linear;
+            animation-timeline: scroll();
+        }
+
+        /* The keyframes for the scroll watcher animation */
+        @keyframes scroll-watcher {
+            to { scale: 1 1; }
+        }
+
+        /* Sticky Navigation Bar */
+        nav {
+            position: fixed;
+            top: 8px; /* Positioned below the scroll watcher */
+            width: 100%;
+            text-align: center;
+            z-index: 999;
+        }
+
+        nav a {
+            display: inline-block;
+            margin: 0 15px;
+            padding: 10px 20px;
+            font-size: 1rem;
+            font-weight: bold;
+            color: #333;
+            text-decoration: none;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 25px;
+            transition: transform 0.2s ease, background-color 0.2s ease;
+            backdrop-filter: blur(5px); /* Frosted glass effect */
+        }
+
+        nav a:hover {
+            transform: translateY(-3px);
+            background-color: rgba(255, 255, 255, 1);
+        }
+
+        /* Section Styling */
+        section {
+            height: 100vh; /* Full screen height */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 80px 20px 20px 20px; /* Added top padding to avoid nav overlap */
+            box-sizing: border-box;
+            text-align: center;
+            position: relative;
+        }
+
+        /* Individual Section Theming */
+        #landing {
+            background-color: #131313;
+        }
+
+        #directory {
+            background-color: #131313;
+        }
+
+        #about {
+            background-color: #131313;
+        }
+
+        /* Content Styling */
+        h1, h2 {
+            font-family: 'Roboto Slab', serif;
+            margin-bottom: 1rem;
+        }
+
+        h1 { font-size: 3rem; }
+        h2 { font-size: 2.5rem; }
+        p { font-size: 1.2rem; max-width: 600px; line-height: 1.6; }
+
+        /* Directory Section Specifics */
+        #directory ul {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+        }
+
+        #directory li {
+            margin: 10px 0;
+        }
+
+        #directory a {
+            color: #007bff;
+            font-weight: bold;
+        }
+        
+        /* The image in the directory section */
+        #directory img {
+            max-width: 80%;
+            height: auto;
+            margin-top: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+
+            /* Animation setup */
+            scale: .9; 
+            opacity: 0;
+            animation: fade-in linear forwards;
+            /* Define the viewport range for the animation */
+            animation-timeline: view();
+            animation-range-start: entry;
+            animation-range-end: 400px;
+        }
+
+        /* The fade-in animation keyframes */
+        @keyframes fade-in {
+            to { scale: 1; opacity: 1; }
+        }
+
+        /* Responsive Design for smaller screens */
+        @media (max-width: 768px) {
+            h1 { font-size: 2.2rem; }
+            h2 { font-size: 2rem; }
+            p { font-size: 1rem; }
+            nav a { margin: 0 5px; padding: 8px 12px; font-size: 0.9rem; }
+        }
+
+    </style>
+</head>
+<body>
+    <!-- The progress bar at the top -->
+    <div class="scroll-watcher"></div>
+
+    <!-- Sticky Navigation -->
+    <nav>
+        <a href="#landing">Home</a>
+        <a href="#directory">Information</a>
+        <a href="#about">About</a>
+    </nav>
+
+    <!-- Section 1: Landing Pane -->
+    <section id="landing">
+        <h1>Welcome to Alestur</h1>
+        <p>Your central hub for all character information, lore, and related resources. Dive in to explore the world.</p>
+    </section>
+
+    <!-- Section 2: Directory Pane -->
+    <section id="directory">
+        <h2>Information Directory</h2>
+        <p>Follow these links to find detailed character sheets, story archives, and world maps.</p>
+        <ul>
+            <li><a href="./pages/family.html" target="_self">The "Family" Tree</a></li>
+        </ul>
+        <ul>
+            <li><a href="./pages/backstory.html"  target="_self">The Backstory</a></li>
+        </ul>
+    </section>
+
+    <!-- Section 3: About Pane -->
+    <section id="about">
+        <h2>About the Author</h2>
+        <p>Gerard is a big fan of D&D, Magic: The Gathering, and coding. Also like, bioinformatics. I mean he is getting a Ph.D. in it after all. He hopes you enjoyd this simple website and his character! Feel free to check out his other Github Repos!</p>
+        <img src="./IMG_0009.jpg" 
+             alt="Illustration of the author."
+             width="800"
+             height="500" />
+    </section>
+
+</body>
+</html>

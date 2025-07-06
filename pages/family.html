@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Family Tree of Alestur</title>
+    <!-- Google Fonts for better typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Lora:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        /* Base Setup */
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            color: #e6dfdf;
+            background-color: #131313;
+        }
+
+        /* Helper Section Styling */
+        .intro-outro {
+            height: 50vh;
+            display: grid;
+            place-content: center;
+            text-align: center;
+            background-color: #131313;
+        }
+        .intro-outro h1 {
+            font-family: 'Lora', serif;
+            font-size: 3rem;
+        }
+        .intro-outro p {
+            font-size: 1.2rem;
+        }
+
+        /* 1. The Scroll Container */
+        .sticky-container {
+            height: 500vh; /* 100vh per panel */
+            position: relative;
+        }
+
+        /* 2. The Sticky Element */
+        .sticky-element {
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        /* 3. The Panels */
+        .panel {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            gap: 2rem;
+            padding: 4rem;
+            box-sizing: border-box;
+
+            /* Set the default state to transparent and slightly scaled down */
+            opacity: 0;
+            transform: scale(0.95);
+            
+            /* Animate any changes to opacity and transform over 0.5s */
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        /* 4. The Visible State Class */
+        .panel.is-visible {
+            /* When this class is added by JS, the panel becomes visible */
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* Panel Content Styling (Unchanged) */
+        .panel .text-content { flex-basis: 40%; max-width: 500px; }
+        .panel .image-content { flex-basis: 50%; display: flex; align-items: center; justify-content: center; }
+        .panel img { width: 100%; max-width: 600px; height: auto; border-radius: 15px; box-shadow: 0 15px 30px rgba(0,0,0,0.15); }
+        .panel h2 { font-family: 'Lora', serif; font-size: 2.8rem; margin-bottom: 1rem; }
+        .panel p { font-size: 1.1rem; line-height: 1.7; }
+        .panel:nth-child(even) { flex-direction: row-reverse; }
+        
+        /* Individual Panel Theming (Unchanged) */
+        #panel-1 { background-color: #131313; }
+        #panel-2 { background-color: #131313; }
+        #panel-3 { background-color: #131313; }
+        #panel-4 { background-color: #131313;}
+        #panel-5 { background-color: #131313;}
+
+        /* INVISIBLE TRIGGERS FOR JAVASCRIPT */
+        .panel-triggers {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%; /* This will be 300vh, same as parent */
+        }
+        .trigger {
+            height: 100vh; /* Each trigger is the height of the screen */
+            width: 100%;
+        }
+
+        /* Responsive Design (Unchanged) */
+        @media (max-width: 768px) {
+            .panel { flex-direction: column !important; padding: 2rem; justify-content: center; text-align: center; }
+            .panel h2 { font-size: 2rem; }
+            .panel p { font-size: 1rem; }
+            .intro-outro h1 { font-size: 2.2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <section class="intro-outro">
+        <div><h1>Learn of the family of Alestur, <br>where the strongest bonds have nothing <br>to do with blood.</h1><p>Scroll down to begin.</p></div>
+    </section>
+
+    <div class="sticky-container">
+        <div class="sticky-element">
+            <!-- Panel 1 -->
+            <div id="panel-1" class="panel">
+                <div class="image-content"><img src="../images/alestur.png" alt="Alestur Wolf"></div>
+                <div class="text-content"><h2>Alestur Wolf</h2><p>Species: Wood Elf<br>
+                Age: 28 yrs<br>
+                Class: Gloom Stalker ranger<br>
+                Story: Raised by the harsh lessons of the streets Vladrich after being abandoned by his parents (unknown). He grew to be a cunning master of city streets and urban districts.
+                 Surviving by his experience, and quick hands he learned one thing,
+                 no one was on his side. That was, until he met Alexandria,
+                 a high-elf he met begging in the streets of Elara's Capitol.
+                 She was the first step to him learning
+                 there is more to life than surviving it. </p></div>
+            </div>
+            <!-- Panel 2 -->
+            <div id="panel-2" class="panel">
+                <div class="image-content"><img src="../images/alexandria.png" alt="Alexandria Willthorne"></div>
+                <div class="text-content"><h2>Alexandria Willthorne</h2><p>Species: High-Elf<br>
+                Age: 32 yrs<br>
+                Class: Way of Mercy Monk<br>
+                Story: A high elf found in low places, Alexandria found her self
+                 stuggling to survive after her parents were killed because of a
+                 feude she did not know existed. After years of travel and strugle,
+                 she found herslef in Elara's, wishing her parents coddled her less
+                 and taught her how to survive. As she stopped for the night and tried to rest,
+                 a few members of an Elarian patrol found themselves bored and began to harass
+                 beat her, thankfully Alestur was near by, and had pleanty of untreated trauma to
+                 take out on them. </p></div>
+            </div>
+            <!-- Panel 3 -->
+            <div id="panel-3" class="panel">
+                <div class="image-content"><img src="../images/Grogth.png" alt="Grogth"></div>
+                <div class="text-content"><h2>Grogth</h2><p>Species: Half-Orc<br>
+                Age: 42 yrs<br>
+                Class: Path of the Ancestral Guardian Barbarian<br>
+                Story: Grogth spent the last decade of his life wandering Elara and Wustoria trying to
+                 trying to find a way to honor his ancestors. His mother fell in love with a human, resulting
+                 in something his clan just could not tolerate. He grew up the other of kin, all of whom were
+                 famous in their own conquests, all to please their ancestors and pass on their traditions. One day,
+                 when wondering through Wustoria, he saw a dispute break out between residents and the guards of an
+                 Elarian outpost. Unfortunately, this dispute resulted as all do when you have a militant occupying
+                 force. In blood, tears, and corpses. Grogth noticed two children trapped between bodies and blades,
+                 and rushed to aid and protect them. As he shielded them and fought of patrol members, an arrow from no where
+                 hit a guard about to attack Grogth from beind. Landing right in the only part of the neck uncovered, the guard fell.
+                 Then, as if materializing, Two elves lept in, it was Alestur and Alexandria. Alexandria grabbed the children and
+                 took them to cover as Alestur finished off the guards. Then they both added whoever they could. Giving them supplies
+                 and healing, taking nothing in return. In that moment something sturred in Grogth. He decided that in service to the
+                 meek, he will be in service to the ancestors. At first, Alestur would not allow Grogth to join him.
+                 "Orcs are just humans with more anger and less intellect" said Alestur "both only strive for power at the expense
+                 of anything, including their own." Grogth learned that Alestur actively hated humans and orcs, hated them and hunted them.
+                 But only those who he witnessed hurting the weak and innocent. Grogth explained his desires, and after giving him a chance,
+                 Grogth went from a possible enemy, to a brother Alestur never thought he would have.</p></div>
+            </div>
+            <!-- Panel 4 -->
+            <div id="panel-4" class="panel">
+                <div class="image-content"><img src="../images/wilks.png" alt="Grogth"></div>
+                <div class="text-content"><h2>Wilks Adams</h2><p>Species: Human<br>
+                Age: 16 yrs<br>
+                Class: Undescovered<br>
+                Story: Struggles between those with power and those without, whats new?
+                 All that mattered to me was my sister, Seriah. I needed to do anything to protect her.
+                 I couldn't do much though, but no one ever helped. Since no one helped I never thought to
+                 ask. In fact, I refused. No one would even if I did, and I didn't have time to find out. I will
+                 never forget that day though. All three of them, and they did not even know each other, the elf couple
+                 and the orc that is. They threw themselves without hesitation into danger to protect strangers, to protect my
+                 sister and I. I never before owed anything to anyone, but if I had to owe my life to someone, I am glad it was them./</p></div>
+            </div>
+            <!-- Panel 5 -->
+            <div id="panel-5" class="panel">
+                <div class="image-content"><img src="../images/serial.png" alt="Grogth"></div>
+                <div class="text-content"><h2>Seriah Adams</h2><p>Species: Human<br>
+                Age: 13 yrs<br>
+                Class: Undescovered<br>
+                Story: My brother always held my hand super tight. He was always looking around for
+                 monsters, but I never saw any. He told me it was just us two, and I always stayed close to him.
+                 One time, some men were yelling and being mean. My brother pulled me behind him
+                 so fast and told me to be quiet. I was scared, so I squeezed my eyes shut. When I
+                 opened them, a pretty lady with pointy ears like a leaf
+                 and a man with sparkly eyes were there. And a giant green man, too! He was really,
+                 really big. He made a low "grumble" sound, and the mean, yelling men ran away.
+                 The pretty lady smiled at me, and I wasn't scared anymore. My brother's mouth was
+                 open. He looked so surprised. He always said no one would help us, but they did!
+                 Ever since then, we were all brothers and sisters! Though Alestur and Alexandria
+                 acted like the mommy and daddy.</p></div>
+            </div>
+        </div>
+
+        <!-- These are the invisible "tripwires" for our JavaScript -->
+        <div class="panel-triggers">
+            <div class="trigger" data-panel="panel-1"></div>
+            <div class="trigger" data-panel="panel-2"></div>
+            <div class="trigger" data-panel="panel-3"></div>
+            <div class="trigger" data-panel="panel-4"></div>
+            <div class="trigger" data-panel="panel-5"></div>
+        </div>
+    </div>
+
+    <section class="intro-outro" style="background-color: #e0e0e0;">
+        <div><h1>End of the Sequence</h1><p>You have scrolled past the sticky section.</p></div>
+    </section>
+
+    <!-- THE JAVASCRIPT LOGIC -->
+    <script>
+        // Select all the panel elements and trigger elements from the document
+        const panels = document.querySelectorAll('.panel');
+        const triggers = document.querySelectorAll('.trigger');
+
+        // This function will be called by the observer
+        const handleIntersection = (entries) => {
+            entries.forEach(entry => {
+                // Check if the trigger is currently intersecting (on screen)
+                if (entry.isIntersecting) {
+                    // Get the ID of the panel to show from the trigger's "data-panel" attribute
+                    const panelIdToShow = entry.target.dataset.panel;
+
+                    // Loop through all panels to update their state
+                    panels.forEach(panel => {
+                        // If the panel's ID matches the one we want to show, add "is-visible"
+                        if (panel.id === panelIdToShow) {
+                            panel.classList.add('is-visible');
+                        } 
+                        // Otherwise, remove the class to make it invisible
+                        else {
+                            panel.classList.remove('is-visible');
+                        }
+                    });
+                }
+            });
+        };
+
+        // Create the Intersection Observer
+        // The threshold of 0.5 means the trigger must be 50% visible to activate
+        const observer = new IntersectionObserver(handleIntersection, { threshold: 0.5 });
+
+        // Tell the observer to "watch" each of our trigger elements
+        triggers.forEach(trigger => {
+            observer.observe(trigger);
+        });
+    </script>
+
+</body>
+</html>
