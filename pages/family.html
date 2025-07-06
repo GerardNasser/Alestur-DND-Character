@@ -75,8 +75,18 @@
         }
 
         /* Panel Content Styling (Unchanged) */
-        .panel .text-content { flex-basis: 40%; max-width: 500px; }
-        .panel .image-content { flex-basis: 50%; display: flex; align-items: center; justify-content: center; }
+        .panel .text-content {
+            flex-basis: 50ch; /* Set a base width related to character count */
+            flex-grow: 1;      /* Allow it to grow */
+            max-width: 65ch;   /* BUT, don't let it get wider than 65 characters */
+        }
+        .panel .image-content {
+            flex-basis: 50%;   /* Let the image side have a strong base size */
+            flex-grow: 2;      /* Allow it to grow more than the text */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
         .panel img { width: 100%; max-width: 600px; height: auto; border-radius: 15px; box-shadow: 0 15px 30px rgba(0,0,0,0.15); }
         .panel h2 { font-family: 'Lora', serif; font-size: 2.8rem; margin-bottom: 1rem; }
         .panel p { font-size: 1.1rem; line-height: 1.7; }
@@ -216,7 +226,7 @@
     </div>
 
     <section class="intro-outro" style="background-color: #131313;">
-        <div><h1>Welcome to the family.</h1><p>Gemini 2.5 was used to produce images.</p></div>
+        <div><h1>Welcome to the family.</h1><p>*Gemini 2.5 was used to produce images.</p></div>
     </section>
 
     <!-- THE JAVASCRIPT LOGIC -->
