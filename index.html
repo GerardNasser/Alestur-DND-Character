@@ -3,195 +3,546 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alestur Character Information</title>
-    <!-- Google Fonts for better typography -->
+    <title>Alestur — Character Information</title>
+    <meta name="description" content="A small site for the world of Alestur — character sheets, lore, and story archives.">
+
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230a0a0c'/%3E%3Ctext x='16' y='22' font-family='Georgia,serif' font-size='18' font-weight='700' text-anchor='middle' fill='%23c9a574'%3EA%3C/text%3E%3C/svg%3E">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Roboto+Slab:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
     <style>
-        /* Base Setup & Smooth Scrolling */
+        /* ---------- Design tokens ---------- */
+        :root {
+            --bg-base: #0a0a0c;
+            --bg-surface: #14141a;
+            --bg-elevated: #1c1c24;
+            --border: rgba(255, 255, 255, 0.08);
+            --border-strong: rgba(255, 255, 255, 0.16);
+            --text-primary: #f5f1ea;
+            --text-secondary: #a8a297;
+            --text-muted: #6b6660;
+            --accent: #c9a574;
+            --accent-hover: #d9b78a;
+            --accent-soft: rgba(201, 165, 116, 0.12);
+            --shadow-card: 0 8px 24px rgba(0, 0, 0, 0.4);
+            --radius-sm: 8px;
+            --radius-md: 14px;
+            --radius-lg: 20px;
+            --transition: 200ms ease;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; }
+
         html {
             scroll-behavior: smooth;
+            scroll-padding-top: 80px;
         }
 
         body {
             margin: 0;
-            font-family: 'Poppins', sans-serif;
-            color: #f4f4f4;
-            background-color: #f4f4f4;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            color: var(--text-primary);
+            background-color: var(--bg-base);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* Scroll Watcher (Your Progress Bar) */
+        /* ---------- Scroll progress bar ---------- */
         .scroll-watcher {
-            height: 8px;
+            height: 3px;
             position: fixed;
             top: 0;
+            left: 0;
             z-index: 1000;
-            background-color: #ffffff;
+            background-color: var(--accent);
             width: 100%;
-            scale: 0 1;
+            transform: scaleX(0);
             transform-origin: left;
-            /* This animation is linked to the scroll position of the page */
             animation: scroll-watcher linear;
             animation-timeline: scroll();
         }
 
-        /* The keyframes for the scroll watcher animation */
         @keyframes scroll-watcher {
-            to { scale: 1 1; }
+            to { transform: scaleX(1); }
         }
 
-        /* Sticky Navigation Bar */
+        /* ---------- Navigation ---------- */
         nav {
             position: fixed;
-            top: 8px; /* Positioned below the scroll watcher */
-            width: 100%;
-            text-align: center;
+            top: 16px;
+            left: 50%;
+            transform: translateX(-50%);
             z-index: 999;
+            display: flex;
+            gap: 4px;
+            padding: 6px;
+            background-color: rgba(20, 20, 26, 0.7);
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
         }
 
         nav a {
-            display: inline-block;
-            margin: 0 15px;
-            padding: 10px 20px;
-            font-size: 1rem;
-            font-weight: bold;
-            color: #333;
+            padding: 8px 18px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-secondary);
             text-decoration: none;
-            background-color: rgba(255, 255, 255, 0.8);
-            border-radius: 25px;
-            transition: transform 0.2s ease, background-color 0.2s ease;
-            backdrop-filter: blur(5px); /* Frosted glass effect */
+            border-radius: 999px;
+            transition: color var(--transition), background-color var(--transition);
         }
 
-        nav a:hover {
-            transform: translateY(-3px);
-            background-color: rgba(255, 255, 255, 1);
+        nav a:hover, nav a:focus-visible {
+            color: var(--text-primary);
+            background-color: rgba(255, 255, 255, 0.06);
+            outline: none;
         }
 
-        /* Section Styling */
+        /* ---------- Section base ---------- */
         section {
-            height: 100vh; /* Full screen height */
+            min-height: 100vh;
+            padding: 120px 24px 80px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 80px 20px 20px 20px; /* Added top padding to avoid nav overlap */
-            box-sizing: border-box;
-            text-align: center;
-            position: relative;
         }
 
-        /* Individual Section Theming */
-        #landing {
-            background-color: #131313;
+        .container {
+            width: 100%;
+            max-width: 1100px;
+            margin: 0 auto;
         }
 
-        #directory {
-            background-color: #131313;
+        h1, h2, h3 {
+            font-family: 'Lora', Georgia, serif;
+            font-weight: 600;
+            line-height: 1.2;
+            margin: 0 0 1rem;
+            letter-spacing: -0.01em;
         }
 
-        #about {
-            background-color: #131313;
+        h1 { font-size: clamp(2.5rem, 6vw, 4.5rem); }
+        h2 { font-size: clamp(2rem, 4vw, 3rem); }
+        h3 { font-size: 1.25rem; }
+
+        p { margin: 0 0 1rem; }
+
+        .lead {
+            font-size: clamp(1.05rem, 1.5vw, 1.2rem);
+            color: var(--text-secondary);
+            max-width: 60ch;
         }
 
-        /* Content Styling */
-        h1, h2 {
-            font-family: 'Roboto Slab', serif;
+        .eyebrow {
+            display: inline-block;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--accent);
             margin-bottom: 1rem;
         }
 
-        h1 { font-size: 3rem; }
-        h2 { font-size: 2.5rem; }
-        p { font-size: 1.2rem; max-width: 600px; line-height: 1.6; }
-
-        /* Directory Section Specifics */
-        #directory ul {
-            list-style: none;
-            padding: 0;
-            margin: 20px 0;
+        /* ---------- Hero ---------- */
+        #landing {
+            position: relative;
+            text-align: center;
+            overflow: hidden;
         }
 
-        #directory li {
-            margin: 10px 0;
+        #landing::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 800px;
+            height: 800px;
+            transform: translate(-50%, -50%);
+            background: radial-gradient(circle, var(--accent-soft) 0%, transparent 60%);
+            pointer-events: none;
         }
 
-        #directory a {
-            color: #007bff;
-            font-weight: bold;
-        }
-        
-        /* The image in the directory section */
-        #directory img {
-            max-width: 80%;
-            height: auto;
+        #landing .container { position: relative; z-index: 1; }
+
+        .hero-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
             margin-top: 2rem;
-            border-radius: 15px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            flex-wrap: wrap;
+        }
 
-            /* Animation setup */
-            scale: .9; 
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 22px;
+            font-family: inherit;
+            font-size: 0.95rem;
+            font-weight: 500;
+            text-decoration: none;
+            border-radius: 999px;
+            border: 1px solid transparent;
+            transition: all var(--transition);
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background-color: var(--accent);
+            color: var(--bg-base);
+        }
+        .btn-primary:hover, .btn-primary:focus-visible {
+            background-color: var(--accent-hover);
+            transform: translateY(-1px);
+            outline: none;
+        }
+
+        .btn-ghost {
+            background-color: transparent;
+            color: var(--text-primary);
+            border-color: var(--border-strong);
+        }
+        .btn-ghost:hover, .btn-ghost:focus-visible {
+            background-color: rgba(255, 255, 255, 0.04);
+            border-color: var(--text-secondary);
+            outline: none;
+        }
+
+        .arrow {
+            display: inline-block;
+            transition: transform var(--transition);
+        }
+        .btn:hover .arrow { transform: translateX(3px); }
+
+        /* ---------- Directory / cards ---------- */
+        #directory { background-color: var(--bg-surface); }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        .section-header .lead { margin-left: auto; margin-right: auto; }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background-color: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition);
+        }
+
+        .card:hover, .card:focus-visible {
+            transform: translateY(-4px);
+            border-color: var(--border-strong);
+            box-shadow: var(--shadow-card);
+            outline: none;
+        }
+
+        .card-media {
+            aspect-ratio: 4 / 3;
+            overflow: hidden;
+            background-color: var(--bg-base);
+        }
+        .card-media img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 400ms ease;
+        }
+        .card:hover .card-media img { transform: scale(1.04); }
+
+        .card-body { padding: 18px 20px 22px; }
+        .card-title {
+            font-family: 'Lora', Georgia, serif;
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin: 0 0 4px;
+        }
+        .card-meta {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin: 0 0 10px;
+        }
+        .card-desc {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin: 0;
+            line-height: 1.55;
+        }
+
+        .archive-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+            margin-top: 3rem;
+        }
+
+        .archive-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 18px 22px;
+            background-color: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            color: inherit;
+            text-decoration: none;
+            transition: border-color var(--transition), background-color var(--transition);
+        }
+        .archive-card:hover, .archive-card:focus-visible {
+            border-color: var(--accent);
+            background-color: rgba(201, 165, 116, 0.04);
+            outline: none;
+        }
+        .archive-card .archive-text strong {
+            display: block;
+            font-family: 'Lora', Georgia, serif;
+            font-size: 1.05rem;
+            margin-bottom: 2px;
+        }
+        .archive-card .archive-text span {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+        .archive-card .arrow {
+            color: var(--accent);
+            font-size: 1.2rem;
+        }
+
+        /* ---------- About ---------- */
+        #about { background-color: var(--bg-base); }
+
+        .about-layout {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 48px;
+            align-items: center;
+        }
+
+        @media (min-width: 768px) {
+            .about-layout { grid-template-columns: 1fr 1fr; gap: 64px; }
+        }
+
+        .about-image {
+            width: 100%;
+            max-width: 460px;
+            margin: 0 auto;
+            aspect-ratio: 4 / 5;
+            object-fit: cover;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-card);
+        }
+
+        .about-text { text-align: left; }
+        .about-text .lead { margin-bottom: 1.5rem; }
+
+        .tag-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 1.5rem;
+        }
+        .tag {
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            padding: 4px 12px;
+            background-color: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 999px;
+        }
+
+        /* ---------- Footer ---------- */
+        footer {
+            padding: 32px 24px;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            border-top: 1px solid var(--border);
+        }
+        footer a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color var(--transition);
+        }
+        footer a:hover { color: var(--accent); }
+
+        /* ---------- Reveal on scroll ---------- */
+        .reveal {
             opacity: 0;
-            animation: fade-in linear forwards;
-            /* Define the viewport range for the animation */
+            transform: translateY(20px);
+            animation: reveal linear forwards;
             animation-timeline: view();
-            animation-range-start: entry;
-            animation-range-end: 400px;
+            animation-range: entry 0% cover 30%;
         }
 
-        /* The fade-in animation keyframes */
-        @keyframes fade-in {
-            to { scale: 1; opacity: 1; }
+        @keyframes reveal {
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Responsive Design for smaller screens */
-        @media (max-width: 768px) {
-            h1 { font-size: 2.2rem; }
-            h2 { font-size: 2rem; }
-            p { font-size: 1rem; }
-            nav a { margin: 0 5px; padding: 8px 12px; font-size: 0.9rem; }
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            .reveal { opacity: 1; transform: none; animation: none; }
+            .scroll-watcher { display: none; }
+            * { transition: none !important; }
         }
 
+        /* ---------- Mobile nav adjustments ---------- */
+        @media (max-width: 480px) {
+            nav { gap: 0; padding: 4px; }
+            nav a { padding: 8px 12px; font-size: 0.85rem; }
+            section { padding: 100px 20px 60px; }
+        }
     </style>
 </head>
 <body>
-    <!-- The progress bar at the top -->
-    <div class="scroll-watcher"></div>
+    <div class="scroll-watcher" aria-hidden="true"></div>
 
-    <!-- Sticky Navigation -->
-    <nav>
+    <nav aria-label="Primary">
         <a href="#landing">Home</a>
-        <a href="#directory">Information</a>
+        <a href="#directory">Directory</a>
         <a href="#about">About</a>
     </nav>
 
-    <!-- Section 1: Landing Pane -->
+    <!-- Hero -->
     <section id="landing">
-        <h1>Welcome to Alestur</h1>
-        <p>Your central hub for all character information, lore, and related resources. Dive in to explore the world.</p>
+        <div class="container">
+            <span class="eyebrow">A world of Alestur</span>
+            <h1>Where the strongest bonds<br>have nothing to do with blood.</h1>
+            <p class="lead" style="margin-left:auto;margin-right:auto;">
+                A small archive of characters, lore, and story arcs from an ongoing D&amp;D campaign.
+                Wander in and meet the family.
+            </p>
+            <div class="hero-actions">
+                <a class="btn btn-primary" href="#directory">
+                    Explore the directory <span class="arrow" aria-hidden="true">&rarr;</span>
+                </a>
+                <a class="btn btn-ghost" href="#about">About this project</a>
+            </div>
+        </div>
     </section>
 
-    <!-- Section 2: Directory Pane -->
+    <!-- Directory -->
     <section id="directory">
-        <h2>Information Directory</h2>
-        <p>Follow these links to find detailed character sheets, story archives, and world maps.</p>
-        <ul>
-            <li><a href="./pages/family.html" target="_self">The "Family" Tree</a></li>
-        </ul>
-        <ul>
-            <li><a href="./pages/backstory.html"  target="_self">The Backstory</a></li>
-        </ul>
+        <div class="container">
+            <div class="section-header reveal">
+                <span class="eyebrow">The Directory</span>
+                <h2>Meet the family</h2>
+                <p class="lead">
+                    Five travelers, none of them related by blood, all of them bound by what they chose to protect.
+                </p>
+            </div>
+
+            <div class="card-grid">
+                <a class="card reveal" href="./pages/family.html#panel-1">
+                    <div class="card-media"><img src="./images/alestur.png" alt="Portrait of Alestur Wolf" loading="lazy"></div>
+                    <div class="card-body">
+                        <h3 class="card-title">Alestur Wolf</h3>
+                        <p class="card-meta">Wood Elf · Gloom Stalker Ranger</p>
+                        <p class="card-desc">A street-shaped ranger who learned the world only after Alexandria stepped into it.</p>
+                    </div>
+                </a>
+                <a class="card reveal" href="./pages/family.html#panel-2">
+                    <div class="card-media"><img src="./images/alexandria.png" alt="Portrait of Alexandria Willthorne" loading="lazy"></div>
+                    <div class="card-body">
+                        <h3 class="card-title">Alexandria Willthorne</h3>
+                        <p class="card-meta">High Elf · Way of Mercy Monk</p>
+                        <p class="card-desc">Orphaned by a feud she never knew, she answers cruelty with patience and precise hands.</p>
+                    </div>
+                </a>
+                <a class="card reveal" href="./pages/family.html#panel-3">
+                    <div class="card-media"><img src="./images/Grogth.png" alt="Portrait of Grogth" loading="lazy"></div>
+                    <div class="card-body">
+                        <h3 class="card-title">Grogth</h3>
+                        <p class="card-meta">Half-Orc · Ancestral Guardian Barbarian</p>
+                        <p class="card-desc">Honoring his ancestors not by conquest, but by standing between the weak and the world.</p>
+                    </div>
+                </a>
+                <a class="card reveal" href="./pages/family.html#panel-4">
+                    <div class="card-media"><img src="./images/wilks.png" alt="Portrait of Wilks Adams" loading="lazy"></div>
+                    <div class="card-body">
+                        <h3 class="card-title">Wilks Adams</h3>
+                        <p class="card-meta">Human · Class Undiscovered</p>
+                        <p class="card-desc">A brother who spent his life shielding his sister, until three strangers shielded them both.</p>
+                    </div>
+                </a>
+                <a class="card reveal" href="./pages/family.html#panel-5">
+                    <div class="card-media"><img src="./images/seriah.png" alt="Portrait of Seriah Adams" loading="lazy"></div>
+                    <div class="card-body">
+                        <h3 class="card-title">Seriah Adams</h3>
+                        <p class="card-meta">Human · Class Undiscovered</p>
+                        <p class="card-desc">The youngest, who learned that the world has kindness in it after all.</p>
+                    </div>
+                </a>
+            </div>
+
+            <div class="archive-list">
+                <a class="archive-card reveal" href="./pages/family.html">
+                    <div class="archive-text">
+                        <strong>The "Family" Tree</strong>
+                        <span>Scroll-through profiles of all five members.</span>
+                    </div>
+                    <span class="arrow" aria-hidden="true">&rarr;</span>
+                </a>
+                <a class="archive-card reveal" href="./pages/backstory.html">
+                    <div class="archive-text">
+                        <strong>The Backstory</strong>
+                        <span>How the group came together &mdash; in long form.</span>
+                    </div>
+                    <span class="arrow" aria-hidden="true">&rarr;</span>
+                </a>
+            </div>
+        </div>
     </section>
 
-    <!-- Section 3: About Pane -->
+    <!-- About -->
     <section id="about">
-        <h2>About the Author</h2>
-        <p>Gerard is a big fan of D&D, Magic: The Gathering, and coding. Also like, bioinformatics. I mean he is getting a Ph.D. in it after all. He hopes you enjoyd this simple website and his character! Feel free to check out his other Github Repos!</p>
-        <img src="./images/IMG_0009.jpg" 
-             alt="Illustration of the author."
-             width="800"
-             height="500" />
+        <div class="container">
+            <div class="about-layout">
+                <img class="about-image reveal"
+                     src="./images/IMG_0009.jpg"
+                     alt="Illustration of the author."
+                     loading="lazy">
+                <div class="about-text reveal">
+                    <span class="eyebrow">About</span>
+                    <h2>Hi, I&rsquo;m Gerard.</h2>
+                    <p class="lead">
+                        I play a lot of D&amp;D, draft a lot of Magic, and write a lot of code &mdash;
+                        which works out, since I&rsquo;m getting a Ph.D. in bioinformatics.
+                    </p>
+                    <p>
+                        This little site is mostly for fun: somewhere to keep the characters straight,
+                        and an excuse to practice the front-end side of things. Thanks for poking around.
+                    </p>
+                    <div class="tag-row">
+                        <span class="tag">D&amp;D</span>
+                        <span class="tag">MTG</span>
+                        <span class="tag">Bioinformatics</span>
+                        <span class="tag">HTML &amp; CSS</span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 
+    <footer>
+        <p>&copy; Alestur &middot; built with HTML, CSS, and a little JavaScript. <a href="https://github.com/" target="_blank" rel="noopener">More projects on GitHub</a>.</p>
+    </footer>
 </body>
 </html>

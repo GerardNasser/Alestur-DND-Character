@@ -3,224 +3,410 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Family Tree of Alestur</title>
-    <!-- Google Fonts for better typography -->
+    <title>The Family &mdash; Alestur</title>
+    <meta name="description" content="Scroll-through profiles of the five members of Alestur's chosen family.">
+
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230a0a0c'/%3E%3Ctext x='16' y='22' font-family='Georgia,serif' font-size='18' font-weight='700' text-anchor='middle' fill='%23c9a574'%3EA%3C/text%3E%3C/svg%3E">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Lora:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
     <style>
-        /* Base Setup */
-        body {
-            margin: 0;
-            font-family: 'Inter', sans-serif;
-            color: #e6dfdf;
-            background-color: #131313;
+        /* ---------- Tokens ---------- */
+        :root {
+            --bg-base: #0a0a0c;
+            --bg-surface: #14141a;
+            --bg-elevated: #1c1c24;
+            --border: rgba(255, 255, 255, 0.08);
+            --text-primary: #f5f1ea;
+            --text-secondary: #a8a297;
+            --text-muted: #6b6660;
+            --accent: #c9a574;
+            --accent-soft: rgba(201, 165, 116, 0.12);
+            --radius-md: 14px;
+            --radius-lg: 20px;
+            --transition: 200ms ease;
         }
 
-        /* Helper Section Styling */
+        *, *::before, *::after { box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            margin: 0;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            color: var(--text-primary);
+            background-color: var(--bg-base);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ---------- Top bar (back link) ---------- */
+        .topbar {
+            position: fixed;
+            top: 16px;
+            left: 16px;
+            z-index: 999;
+        }
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            text-decoration: none;
+            background-color: rgba(20, 20, 26, 0.7);
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            transition: color var(--transition), border-color var(--transition);
+        }
+        .back-link:hover, .back-link:focus-visible {
+            color: var(--text-primary);
+            border-color: var(--accent);
+            outline: none;
+        }
+
+        /* ---------- Panel indicator ---------- */
+        .panel-indicator {
+            position: fixed;
+            top: 50%;
+            right: 24px;
+            transform: translateY(-50%);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .panel-indicator span {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.18);
+            transition: background-color var(--transition), transform var(--transition);
+        }
+        .panel-indicator span.active {
+            background-color: var(--accent);
+            transform: scale(1.3);
+        }
+
+        /* ---------- Intro / outro ---------- */
         .intro-outro {
-            height: 50vh;
+            min-height: 70vh;
             display: grid;
             place-content: center;
             text-align: center;
-            background-color: #131313;
+            padding: 80px 24px;
+            background-color: var(--bg-base);
+        }
+        .intro-outro .eyebrow {
+            display: inline-block;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 1rem;
         }
         .intro-outro h1 {
-            font-family: 'Lora', serif;
-            font-size: 3rem;
+            font-family: 'Lora', Georgia, serif;
+            font-weight: 600;
+            font-size: clamp(1.8rem, 4vw, 3rem);
+            line-height: 1.25;
+            margin: 0 0 1rem;
+            letter-spacing: -0.01em;
+            max-width: 22ch;
+            margin-inline: auto;
         }
         .intro-outro p {
-            font-size: 1.2rem;
+            color: var(--text-secondary);
+            font-size: 1rem;
+            margin: 0;
         }
 
-        /* 1. The Scroll Container */
+        /* ---------- Sticky scroll storytelling ---------- */
         .sticky-container {
-            height: 500vh; /* 100vh per panel */
+            height: 500vh;
             position: relative;
         }
 
-        /* 2. The Sticky Element */
         .sticky-element {
             position: sticky;
             top: 0;
             height: 100vh;
             width: 100%;
             overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        /* 3. The Panels */
         .panel {
             position: absolute;
             inset: 0;
             display: flex;
             align-items: center;
-            justify-content: space-around;
-            gap: 2rem;
-            padding: 4rem;
-            box-sizing: border-box;
-            height: auto;
+            justify-content: center;
+            gap: 4rem;
+            padding: 6rem 4rem;
+            max-width: 1300px;
+            margin: 0 auto;
 
-            /* Set the default state to transparent and slightly scaled down */
             opacity: 0;
-            transform: scale(0.95);
-            
-            /* Animate any changes to opacity and transform over 0.5s */
-            transition: opacity 0.5s ease, transform 0.5s ease;
-
-            max-width: 1500px; /* max-width for the whole component */
-            margin: 0 auto;    /* centers it horizontally */
+            transform: scale(0.96) translateY(12px);
+            transition: opacity 600ms ease, transform 600ms ease;
+            pointer-events: none;
         }
 
-        /* 4. The Visible State Class */
         .panel.is-visible {
-            /* When this class is added by JS, the panel becomes visible */
             opacity: 1;
-            transform: scale(1);
+            transform: scale(1) translateY(0);
+            pointer-events: auto;
         }
 
-        /* Panel Content Styling */
-        .panel .text-content {
-            flex-basis: 50ch; /* Set a base width related to character count */
-            flex-grow: 1;      /* Allow it to grow */
-            max-width: 300ch;   /* BUT, don't let it get wider than 65 characters */
-        }
         .panel .image-content {
-            flex-basis: 50%;   /* Let the image side have a strong base size */
-            flex-grow: 2;      /* Allow it to grow more than the text */
+            flex: 1 1 50%;
             display: flex;
             align-items: center;
             justify-content: center;
         }
-        .panel img { width: 100%; max-width: 600px; height: auto; border-radius: 15px; box-shadow: 0 15px 30px rgba(0,0,0,0.15); }
-        .panel h2 { font-family: 'Lora', serif; font-size: 2.8rem; margin-bottom: 1rem; }
-        .panel p { font-size: 1.1rem; line-height: 1.7; }
-        .panel:nth-child(even) { flex-direction: row-reverse; }
-        
-        /* Individual Panel Theming */
-        #panel-1 { background-color: #131313; }
-        #panel-2 { background-color: #131313; }
-        #panel-3 { background-color: #131313; }
-        #panel-4 { background-color: #131313;}
-        #panel-5 { background-color: #131313;}
+        .panel img {
+            width: 100%;
+            max-width: 460px;
+            height: auto;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        }
 
-        /* INVISIBLE TRIGGERS FOR JAVASCRIPT */
+        .panel .text-content {
+            flex: 1 1 50%;
+            max-width: 540px;
+        }
+
+        .panel:nth-child(even) { flex-direction: row-reverse; }
+
+        .panel .character-meta {
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 0.75rem;
+        }
+
+        .panel h2 {
+            font-family: 'Lora', Georgia, serif;
+            font-weight: 600;
+            font-size: clamp(2rem, 3.5vw, 2.8rem);
+            line-height: 1.15;
+            margin: 0 0 1rem;
+            letter-spacing: -0.01em;
+        }
+
+        .panel .stat-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 0 0 1.25rem;
+        }
+        .panel .stat {
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            padding: 4px 12px;
+            background-color: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 999px;
+        }
+
+        .panel .story {
+            font-size: 1.05rem;
+            line-height: 1.75;
+            color: var(--text-secondary);
+            margin: 0;
+        }
+
+        /* ---------- Invisible scroll triggers ---------- */
         .panel-triggers {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
-            height: 100%; /* This will be 300vh, same as parent */
+            height: 100%;
         }
         .trigger {
-            height: 100vh; /* Each trigger is the height of the screen */
+            height: 100vh;
             width: 100%;
         }
 
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .panel { flex-direction: column !important; padding: 2rem; justify-content: center; text-align: center; }
-            .panel h2 { font-size: 2rem; }
-            .panel p { font-size: 1rem; }
-            .intro-outro h1 { font-size: 2.2rem; }
+        /* ---------- Responsive ---------- */
+        @media (max-width: 900px) {
+            .panel,
+            .panel:nth-child(even) {
+                flex-direction: column;
+                gap: 2rem;
+                padding: 5rem 1.5rem 2rem;
+                justify-content: flex-start;
+                text-align: center;
+                overflow-y: auto;
+            }
+            .panel .image-content { flex: 0 0 auto; }
+            .panel img { max-width: 260px; }
+            .panel .text-content { flex: 1 1 auto; max-width: 100%; }
+            .panel .stat-row { justify-content: center; }
+            .panel-indicator { right: 12px; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            .panel { transition: opacity 200ms linear; transform: none; }
+            .panel.is-visible { transform: none; }
         }
     </style>
 </head>
 <body>
 
+    <div class="topbar">
+        <a class="back-link" href="../index.html">
+            <span aria-hidden="true">&larr;</span> Back to home
+        </a>
+    </div>
+
+    <div class="panel-indicator" aria-hidden="true">
+        <span data-dot="panel-1"></span>
+        <span data-dot="panel-2"></span>
+        <span data-dot="panel-3"></span>
+        <span data-dot="panel-4"></span>
+        <span data-dot="panel-5"></span>
+    </div>
+
     <section class="intro-outro">
-        <div><h1>Learn of the family of Alestur, <br>where the strongest bonds have nothing <br>to do with blood.</h1><p>Scroll down to begin.</p></div>
+        <div>
+            <span class="eyebrow">The Family</span>
+            <h1>The strongest bonds have nothing to do with blood.</h1>
+            <p>Scroll down to meet them, one by one.</p>
+        </div>
     </section>
 
-<div class="sticky-container">
-    <div class="sticky-element">
-        <!-- Panel 1 -->
-        <div id="panel-1" class="panel">
-            <div class="image-content"><img src="../images/alestur.png" alt="Alestur Wolf"></div>
-            <div class="text-content">
-                <h2>Alestur Wolf</h2>
-                <p>Species: Wood Elf<br>
-                Age: 28 yrs<br>
-                Class: Gloom Stalker Ranger<br>
-                Story: Abandoned by unknown parents and shaped by the unforgiving streets of Vladrich, Alestur became a 
-                cunning master of its alleys and shadows. Life taught him one lesson: he stood alone. That changed when 
-                he met Alexandria, a high elf he found begging in Elara’s Capitol. She was the first to show him there 
-                was more to life than survival.</p>
+    <div class="sticky-container">
+        <div class="sticky-element">
+            <!-- Panel 1: Alestur -->
+            <div id="panel-1" class="panel">
+                <div class="image-content"><img src="../images/alestur.png" alt="Portrait of Alestur Wolf"></div>
+                <div class="text-content">
+                    <p class="character-meta">Member 01 &middot; The Ranger</p>
+                    <h2>Alestur Wolf</h2>
+                    <div class="stat-row">
+                        <span class="stat">Wood Elf</span>
+                        <span class="stat">28 yrs</span>
+                        <span class="stat">Gloom Stalker Ranger</span>
+                    </div>
+                    <p class="story">
+                        Abandoned by unknown parents and shaped by the unforgiving streets of Vladrich,
+                        Alestur became a cunning master of its alleys and shadows. Life taught him one
+                        lesson: he stood alone. That changed when he met Alexandria, a high elf he
+                        found begging in Elara&rsquo;s Capitol. She was the first to show him there was
+                        more to life than survival.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Panel 2: Alexandria -->
+            <div id="panel-2" class="panel">
+                <div class="image-content"><img src="../images/alexandria.png" alt="Portrait of Alexandria Willthorne"></div>
+                <div class="text-content">
+                    <p class="character-meta">Member 02 &middot; The Monk</p>
+                    <h2>Alexandria Willthorne</h2>
+                    <div class="stat-row">
+                        <span class="stat">High Elf</span>
+                        <span class="stat">32 yrs</span>
+                        <span class="stat">Way of Mercy Monk</span>
+                    </div>
+                    <p class="story">
+                        After her parents were killed in a feud she never knew existed, Alexandria
+                        wandered for years, struggling to survive. In Elara&rsquo;s Capitol, exhausted
+                        and alone, she was harassed and beaten by bored patrolmen. Alestur, carrying
+                        more trauma than patience, intervened. Their meeting marked the start of a
+                        bond neither expected.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Panel 3: Grogth -->
+            <div id="panel-3" class="panel">
+                <div class="image-content"><img src="../images/Grogth.png" alt="Portrait of Grogth"></div>
+                <div class="text-content">
+                    <p class="character-meta">Member 03 &middot; The Guardian</p>
+                    <h2>Grogth</h2>
+                    <div class="stat-row">
+                        <span class="stat">Half-Orc</span>
+                        <span class="stat">42 yrs</span>
+                        <span class="stat">Ancestral Guardian Barbarian</span>
+                    </div>
+                    <p class="story">
+                        Born to an orc mother and a human father, Grogth grew up an outcast among a
+                        clan famed for honoring their ancestors through conquest. For years he
+                        wandered Elara and Wustoria, seeking his own way to honor them. At an
+                        Elarian outpost, he saw residents slaughtered by guards and rescued two
+                        trapped children. An arrow suddenly struck a guard attacking him &mdash;
+                        Alestur had arrived, with Alexandria close behind. Inspired, Grogth realized
+                        that serving the meek was also serving his ancestors, and eventually became
+                        the brother Alestur never expected.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Panel 4: Wilks -->
+            <div id="panel-4" class="panel">
+                <div class="image-content"><img src="../images/wilks.png" alt="Portrait of Wilks Adams"></div>
+                <div class="text-content">
+                    <p class="character-meta">Member 04 &middot; The Brother</p>
+                    <h2>Wilks Adams</h2>
+                    <div class="stat-row">
+                        <span class="stat">Human</span>
+                        <span class="stat">16 yrs</span>
+                        <span class="stat">Class Undiscovered</span>
+                    </div>
+                    <p class="story">
+                        Power always crushes the powerless &mdash; nothing new. All I cared about was
+                        protecting my sister, Seriah, though I was rarely strong enough to do it.
+                        No one ever helped us, so I stopped believing anyone could. Then came the
+                        day everything changed. Three strangers &mdash; an elf couple and an orc &mdash;
+                        threw themselves into danger to save us. For the first time in my life, I
+                        owed someone something, and I&rsquo;m grateful it was them.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Panel 5: Seriah -->
+            <div id="panel-5" class="panel">
+                <div class="image-content"><img src="../images/seriah.png" alt="Portrait of Seriah Adams"></div>
+                <div class="text-content">
+                    <p class="character-meta">Member 05 &middot; The Sister</p>
+                    <h2>Seriah Adams</h2>
+                    <div class="stat-row">
+                        <span class="stat">Human</span>
+                        <span class="stat">13 yrs</span>
+                        <span class="stat">Class Undiscovered</span>
+                    </div>
+                    <p class="story">
+                        My brother always held my hand tightly, scanning for the &ldquo;monsters&rdquo;
+                        he feared would find us. When a group of men cornered us, he pulled me behind
+                        him, whispering for me to stay quiet. I shut my eyes &mdash; until a change in
+                        the air made me look. An elf woman with leaf-like ears stood beside a sharp-eyed
+                        elf and a towering orc. A single growl from the orc sent the men fleeing.
+                        From then on, we became a strange kind of family &mdash; and though we called
+                        one another siblings, Alestur and Alexandria had become the parents we never had.
+                    </p>
+                </div>
             </div>
         </div>
 
-        <!-- Panel 2 -->
-        <div id="panel-2" class="panel">
-            <div class="image-content"><img src="../images/alexandria.png" alt="Alexandria Willthorne"></div>
-            <div class="text-content">
-                <h2>Alexandria Willthorne</h2>
-                <p>Species: High Elf<br>
-                Age: 32 yrs<br>
-                Class: Way of Mercy Monk<br>
-                Story: After her parents were killed in a feud she never knew existed, Alexandria wandered for years, 
-                struggling to survive. In Elara’s Capitol, exhausted and alone, she was harassed and beaten by bored 
-                patrolmen. Alestur, carrying more trauma than patience, intervened. Their meeting marked the start of 
-                a bond neither expected.</p>
-            </div>
-        </div>
-
-        <!-- Panel 3 -->
-        <div id="panel-3" class="panel">
-            <div class="image-content"><img src="../images/Grogth.png" alt="Grogth"></div>
-            <div class="text-content">
-                <h2>Grogth</h2>
-                <p>Species: Half-Orc<br>
-                Age: 42 yrs<br>
-                Class: Path of the Ancestral Guardian Barbarian<br>
-                Story: Born to an orc mother and a human father, Grogth grew up an outcast among a clan famed for 
-                honoring their ancestors through conquest. For years he wandered Elara and Wustoria, seeking his 
-                own way to honor them. At an Elarian outpost, he saw residents slaughtered by guards and rescued 
-                two trapped children. An arrow suddenly struck a guard attacking him—Alestur had arrived, with 
-                Alexandria close behind. They fought to protect the innocent, giving help while asking nothing. 
-                Inspired, Grogth realized that serving the meek was also serving his ancestors. Though Alestur 
-                initially distrusted him—hating humans and orcs who preyed on the weak—Grogth’s sincerity earned 
-                him a place among them, eventually becoming the brother Alestur never expected.</p>
-            </div>
-        </div>
-
-        <!-- Panel 4 -->
-        <div id="panel-4" class="panel">
-            <div class="image-content"><img src="../images/wilks.png" alt="Grogth"></div>
-            <div class="text-content">
-                <h2>Wilks Adams</h2>
-                <p>Species: Human<br>
-                Age: 16 yrs<br>
-                Class: Undiscovered<br>
-                Story: Power always crushes the powerless—nothing new. All I cared about was protecting my sister, 
-                Seriah, though I was rarely strong enough to do it. No one ever helped us, so I stopped believing 
-                anyone could. Then came the day everything changed. Three strangers—an elf couple and an orc—threw 
-                themselves into danger to save us. For the first time in my life, I owed someone something, and I’m 
-                grateful it was them.</p>
-            </div>
-        </div>
-
-        <!-- Panel 5 -->
-        <div id="panel-5" class="panel">
-            <div class="image-content"><img src="../images/seriah.png" alt="Grogth"></div>
-            <div class="text-content">
-                <h2>Seriah Adams</h2>
-                <p>Species: Human<br>
-                Age: 13 yrs<br>
-                Class: Undiscovered<br>
-                Story: My brother always held my hand tightly, scanning for the “monsters” he feared would find us. 
-                To him, it was always the two of us against the world. When a group of men cornered us, he pulled me 
-                behind him, whispering for me to stay quiet. I shut my eyes, terrified—until a change in the air made 
-                me look. An elf woman with leaf-like ears stood beside a sharp-eyed elf and a towering orc. A single 
-                growl from the orc sent the men fleeing. The elf woman’s gentle smile eased my fear, but it was my 
-                brother’s stunned disbelief that I remember most. He had always told me no one would ever help us. 
-                But these strangers did. From then on, we became a strange kind of family, and though we called one 
-                another siblings, it was clear that Alestur and Alexandria had become the parents we never had.</p>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-        <!-- These are the invisible "tripwires" for our JavaScript -->
         <div class="panel-triggers">
             <div class="trigger" data-panel="panel-1"></div>
             <div class="trigger" data-panel="panel-2"></div>
@@ -230,47 +416,37 @@
         </div>
     </div>
 
-    <section class="intro-outro" style="background-color: #131313;">
-        <div><h1>Welcome to the family.</h1><p>*Gemini 2.5 was used to produce images.</p></div>
+    <section class="intro-outro">
+        <div>
+            <span class="eyebrow">Fin</span>
+            <h1>Welcome to the family.</h1>
+            <p>*Character portraits generated with Gemini 2.5.</p>
+        </div>
     </section>
 
-    <!-- THE JAVASCRIPT LOGIC -->
     <script>
-        // Select all the panel elements and trigger elements from the document
         const panels = document.querySelectorAll('.panel');
         const triggers = document.querySelectorAll('.trigger');
+        const dots = document.querySelectorAll('.panel-indicator span');
 
-        // This function will be called by the observer
-        const handleIntersection = (entries) => {
-            entries.forEach(entry => {
-                // Check if the trigger is currently intersecting (on screen)
-                if (entry.isIntersecting) {
-                    // Get the ID of the panel to show from the trigger's "data-panel" attribute
-                    const panelIdToShow = entry.target.dataset.panel;
-
-                    // Loop through all panels to update their state
-                    panels.forEach(panel => {
-                        // If the panel's ID matches the one we want to show, add "is-visible"
-                        if (panel.id === panelIdToShow) {
-                            panel.classList.add('is-visible');
-                        } 
-                        // Otherwise, remove the class to make it invisible
-                        else {
-                            panel.classList.remove('is-visible');
-                        }
-                    });
-                }
+        const setActive = (panelId) => {
+            panels.forEach(panel => {
+                panel.classList.toggle('is-visible', panel.id === panelId);
+            });
+            dots.forEach(dot => {
+                dot.classList.toggle('active', dot.dataset.dot === panelId);
             });
         };
 
-        // Create the Intersection Observer
-        // The threshold of 0.5 means the trigger must be 50% visible to activate
-        const observer = new IntersectionObserver(handleIntersection, { threshold: 0.5 });
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    setActive(entry.target.dataset.panel);
+                }
+            });
+        }, { threshold: 0.5 });
 
-        // Tell the observer to "watch" each of our trigger elements
-        triggers.forEach(trigger => {
-            observer.observe(trigger);
-        });
+        triggers.forEach(trigger => observer.observe(trigger));
     </script>
 
 </body>

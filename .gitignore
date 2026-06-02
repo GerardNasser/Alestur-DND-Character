@@ -1,0 +1,14 @@
+# Local learning notes — not shipped with the site
+concepts/
+
+# macOS
+.DS_Store
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*~
+
+# OS / misc
+Thumbs.db

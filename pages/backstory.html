@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Backstory &mdash; Alestur</title>
+    <meta name="description" content="How a stranger in an alley, an arrow at the right moment, and two frightened children became a family.">
+
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230a0a0c'/%3E%3Ctext x='16' y='22' font-family='Georgia,serif' font-size='18' font-weight='700' text-anchor='middle' fill='%23c9a574'%3EA%3C/text%3E%3C/svg%3E">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-base: #0a0a0c;
+            --bg-surface: #14141a;
+            --bg-elevated: #1c1c24;
+            --border: rgba(255, 255, 255, 0.08);
+            --text-primary: #f5f1ea;
+            --text-secondary: #a8a297;
+            --text-muted: #6b6660;
+            --accent: #c9a574;
+            --accent-soft: rgba(201, 165, 116, 0.12);
+            --transition: 200ms ease;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            margin: 0;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            color: var(--text-primary);
+            background-color: var(--bg-base);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .topbar { position: fixed; top: 16px; left: 16px; z-index: 999; }
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            text-decoration: none;
+            background-color: rgba(20, 20, 26, 0.7);
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            transition: color var(--transition), border-color var(--transition);
+        }
+        .back-link:hover, .back-link:focus-visible {
+            color: var(--text-primary);
+            border-color: var(--accent);
+            outline: none;
+        }
+
+        .hero {
+            min-height: 60vh;
+            display: grid;
+            place-content: center;
+            text-align: center;
+            padding: 120px 24px 60px;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: 30%;
+            left: 50%;
+            width: 700px;
+            height: 700px;
+            transform: translate(-50%, -50%);
+            background: radial-gradient(circle, var(--accent-soft) 0%, transparent 60%);
+            pointer-events: none;
+        }
+        .hero > * { position: relative; }
+
+        .eyebrow {
+            display: inline-block;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+        .hero h1 {
+            font-family: 'Lora', Georgia, serif;
+            font-weight: 600;
+            font-size: clamp(2.25rem, 5vw, 3.75rem);
+            line-height: 1.15;
+            margin: 0 0 1rem;
+            letter-spacing: -0.01em;
+            max-width: 18ch;
+            margin-inline: auto;
+        }
+        .hero p {
+            max-width: 60ch;
+            margin: 0 auto;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        article {
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 40px 24px 120px;
+        }
+
+        article h2 {
+            font-family: 'Lora', Georgia, serif;
+            font-weight: 600;
+            font-size: 1.8rem;
+            margin: 3rem 0 1rem;
+            letter-spacing: -0.01em;
+        }
+        article h2:first-of-type { margin-top: 0; }
+
+        article p {
+            margin: 0 0 1.2rem;
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+        }
+        article p strong { color: var(--text-primary); font-weight: 600; }
+
+        .chapter-divider {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin: 3rem 0;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+        .chapter-divider::before,
+        .chapter-divider::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background-color: var(--border);
+        }
+
+        .pullquote {
+            margin: 2.5rem 0;
+            padding: 1.5rem 1.75rem;
+            border-left: 3px solid var(--accent);
+            background-color: var(--bg-elevated);
+            border-radius: 0 12px 12px 0;
+            font-family: 'Lora', Georgia, serif;
+            font-style: italic;
+            font-size: 1.15rem;
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .next-up {
+            margin-top: 4rem;
+            padding: 24px;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            background-color: var(--bg-surface);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            text-decoration: none;
+            color: inherit;
+            transition: border-color var(--transition);
+        }
+        .next-up:hover, .next-up:focus-visible {
+            border-color: var(--accent);
+            outline: none;
+        }
+        .next-up span:first-child {
+            display: block;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+        .next-up strong {
+            font-family: 'Lora', Georgia, serif;
+            font-size: 1.1rem;
+        }
+        .next-up .arrow { color: var(--accent); font-size: 1.4rem; }
+
+        footer {
+            padding: 32px 24px;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            border-top: 1px solid var(--border);
+        }
+
+        @media (max-width: 480px) {
+            article { padding: 32px 20px 80px; }
+            .pullquote { padding: 1.25rem 1.25rem; font-size: 1.05rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="topbar">
+        <a class="back-link" href="../index.html">
+            <span aria-hidden="true">&larr;</span> Back to home
+        </a>
+    </div>
+
+    <section class="hero">
+        <span class="eyebrow">The Backstory</span>
+        <h1>How the family came to be.</h1>
+        <p>A street kid, a wandering monk, a half-orc looking for his ancestors, and two children who&rsquo;d never been protected before.</p>
+    </section>
+
+    <article>
+        <h2>I. Alone in Vladrich</h2>
+        <p>
+            Alestur doesn&rsquo;t remember the faces of his parents, but he remembers the alleys.
+            By the time he was old enough to count years, Vladrich had already taught him every
+            lesson he needed: trust no one, owe no one, and never look surprised when the world
+            picks your pocket. He survived. That was the whole of it.
+        </p>
+        <p>
+            Years later, in Elara&rsquo;s Capitol, he saw a high elf begging on the steps of the
+            chapel. She wasn&rsquo;t crying. She was just thin, and quiet, and very still. He
+            didn&rsquo;t know why he stopped &mdash; he tells himself, even now, that he doesn&rsquo;t know.
+        </p>
+
+        <p class="pullquote">
+            &ldquo;You stop because somebody has to. That&rsquo;s the only reason anyone ever stops.&rdquo;
+        </p>
+
+        <div class="chapter-divider">II</div>
+
+        <h2>II. Two travelers</h2>
+        <p>
+            <strong>Alexandria Willthorne</strong> had been wandering since her parents were killed in a
+            feud she&rsquo;d never been told about. She&rsquo;d learned to read people the way Alestur had learned
+            to read shadows &mdash; out of necessity, and quickly. When patrolmen began harassing her for sport,
+            she didn&rsquo;t fight back; she calculated.
+        </p>
+        <p>
+            Alestur did the fighting for her. Badly. Loudly. And then he sat beside her on the steps,
+            checking the cut on his lip, and said something dry enough that she actually laughed. They
+            travelled together after that, for no reason either of them could articulate.
+        </p>
+
+        <div class="chapter-divider">III</div>
+
+        <h2>III. An arrow at the right moment</h2>
+        <p>
+            <strong>Grogth</strong> found them, or they found him, at an Elarian outpost on the edge of Wustoria.
+            He was already mid-rescue &mdash; two children pulled from under a collapsing wagon, a guard
+            closing in on his back. The arrow that dropped the guard came from a rooftop. Alestur landed
+            beside him a moment later, Alexandria already moving to the children.
+        </p>
+        <p>
+            Grogth had spent his life trying to honor his ancestors the way his clan demanded:
+            through conquest. Standing in the dust of that outpost, watching two strangers do
+            what his clan never would have, he understood for the first time that there might be
+            another way.
+        </p>
+
+        <div class="chapter-divider">IV</div>
+
+        <h2>IV. The siblings</h2>
+        <p>
+            The children were <strong>Wilks</strong> and <strong>Seriah Adams</strong>. Wilks had spent
+            his entire short life convinced no one would ever help them; Seriah, younger, had taken his
+            word for it. The first night, neither of them slept &mdash; they kept watching the three
+            strangers across the fire, waiting for the trick.
+        </p>
+        <p>
+            The trick never came. By the second week, Seriah was riding on Grogth&rsquo;s shoulders.
+            By the second month, Wilks had stopped flinching when Alexandria reached toward him.
+            None of them said the word <em>family</em> out loud. They didn&rsquo;t have to.
+        </p>
+
+        <p class="pullquote">
+            &ldquo;We never said it. We just stopped leaving.&rdquo;
+        </p>
+
+        <a class="next-up" href="./family.html">
+            <div>
+                <span>Up next</span>
+                <strong>Meet the family, one panel at a time</strong>
+            </div>
+            <span class="arrow" aria-hidden="true">&rarr;</span>
+        </a>
+    </article>
+
+    <footer>
+        <p>&copy; Alestur</p>
+    </footer>
+
+</body>
+</html>
